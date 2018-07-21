@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018/7 | 王武的技术博客</title>
+  <title>“hashMap底层源码解读.md” | 王武的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="嗨大家好欢迎关注我的博客">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="王武的技术博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/07/index.html">
+  <meta name="description" content="hashCode() 说起hashCode 是jdk根据对象的地址或者字符串或者数字算出来的int类型的数值 hashCode 契约 这个契约在 hashCode 方法的 JavaDoc 中进行了阐述。它可以大致的归纳为下面几点： 1.在一个运行的进程中，相等的对象必须要有相同的哈希码 2.请注意这并不意味着以下常见的误解： 3.不相等的对象一定有着不同的哈希码——错！ 4.有同一个哈希值的对象一">
+<meta name="keywords" content="java 源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“hashMap底层源码解读.md”">
+<meta property="og:url" content="http://yoursite.com/2018/07/16/hashMap底层源码解读-md/index.html">
 <meta property="og:site_name" content="王武的技术博客">
-<meta property="og:description" content="嗨大家好欢迎关注我的博客">
+<meta property="og:description" content="hashCode() 说起hashCode 是jdk根据对象的地址或者字符串或者数字算出来的int类型的数值 hashCode 契约 这个契约在 hashCode 方法的 JavaDoc 中进行了阐述。它可以大致的归纳为下面几点： 1.在一个运行的进程中，相等的对象必须要有相同的哈希码 2.请注意这并不意味着以下常见的误解： 3.不相等的对象一定有着不同的哈希码——错！ 4.有同一个哈希值的对象一">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-21T02:57:54.921Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王武的技术博客">
-<meta name="twitter:description" content="嗨大家好欢迎关注我的博客">
+<meta name="twitter:title" content="“hashMap底层源码解读.md”">
+<meta name="twitter:description" content="hashCode() 说起hashCode 是jdk根据对象的地址或者字符串或者数字算出来的int类型的数值 hashCode 契约 这个契约在 hashCode 方法的 JavaDoc 中进行了阐述。它可以大致的归纳为下面几点： 1.在一个运行的进程中，相等的对象必须要有相同的哈希码 2.请注意这并不意味着以下常见的误解： 3.不相等的对象一定有着不同的哈希码——错！ 4.有同一个哈希值的对象一">
   
     <link rel="alternative" href="/atom.xml" title="王武的技术博客" type="application/atom+xml">
   
@@ -191,36 +192,96 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-hashMap底层源码解读-md" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/16/hashMap底层源码解读-md/" class="archive-article-date">
-  	<time datetime="2018-07-16T10:25:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/16/hashMap底层源码解读-md/">“hashMap底层源码解读.md”</a>
+    <h1 class="article-title" itemprop="name">
+      “hashMap底层源码解读.md”
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/07/16/hashMap底层源码解读-md/" class="archive-article-date">
+  	<time datetime="2018-07-16T10:25:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="hashCode-说起"><a href="#hashCode-说起" class="headerlink" title="hashCode() 说起"></a>hashCode() 说起</h3><p>hashCode 是jdk根据对象的地址或者字符串或者数字算出来的int类型的数值</p>
+<p>hashCode 契约</p>
+<p>这个契约在 hashCode 方法的 JavaDoc 中进行了阐述。它可以大致的归纳为下面几点：</p>
+<p>1.在一个运行的进程中，相等的对象必须要有相同的哈希码</p>
+<p>2.请注意这并不意味着以下常见的误解：</p>
+<p>3.不相等的对象一定有着不同的哈希码——错！</p>
+<p>4.有同一个哈希值的对象一定相等——错！</p>
+<p>不同对象的数量经常比可能的哈希吗的数量 (2^32)更大；</p>
+<h3 id="什么是HashMap-主题"><a href="#什么是HashMap-主题" class="headerlink" title="什么是HashMap? 主题"></a>什么是HashMap? 主题</h3><p> HashMap 是用于储存（key-value）键值对集合，每一个键值对应Entry，这些键储存在一个数据中，数据是HashMap的主干。<br>内部是通过数组与链表实现的,可以理解为“链表的数组”。</p>
+<h3 id="put操作做了什么？"><a href="#put操作做了什么？" class="headerlink" title="put操作做了什么？"></a>put操作做了什么？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    if (key == null)</span><br><span class="line">        return putForNullKey(value);</span><br><span class="line">    //计算获取hash值</span><br><span class="line">    int hash = hash(key.hashCode());</span><br><span class="line">    //获取此次hash值在数组（bucket）的下标位置</span><br><span class="line">    int i = indexFor(hash, table.length);</span><br><span class="line">    for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) &#123;</span><br><span class="line">        Object k;</span><br><span class="line">        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            e.value = value;</span><br><span class="line">            e.recordAccess(this);</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    addEntry(hash, key, value, i);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void addEntry(int hash, K key, V value, int bucketIndex) &#123;</span><br><span class="line">    Entry&lt;K,V&gt; e = table[bucketIndex];</span><br><span class="line">    table[bucketIndex] = new Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">    if (size++ &gt;= threshold)</span><br><span class="line">        resize(2 * table.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1、可以看出put储存对象时候，先调用hashCode计算hash从而得到bucket位置。</p>
+<p>2、如果索引碰撞，遍历链表，判断是否有key存在，若存在更新value值。（不过在JDK1.8中链表元素超过8个时，会把链表结构转换成红黑树结构存储，提高查询的性能）</p>
+<p>3.若未碰撞，直接放入表中。</p>
+<p>4.放入前，如果元素个数超过负载因子的比例，则进行rehash，扩容，之会插入。</p>
+<p>5.null key的元素永远会放到index为0的链表里面。</p>
+<p>注意：当新加是达到量的阀值（ threshold = (int)(DEFAULT_INITIAL_CAPACITY <em> DEFAULT_LOAD_FACTOR) ） 默认容器大小16</em>负载因子0.75f 则开始扩容。容量大小是之前的2倍。</p>
+<h3 id="hash算法是什么？"><a href="#hash算法是什么？" class="headerlink" title="hash算法是什么？"></a>hash算法是什么？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">JDK1.7</span><br><span class="line">static int hash(int h) &#123;</span><br><span class="line">    // This function ensures that hashCodes that differ only by</span><br><span class="line">    // constant multiples at each bit position have a bounded</span><br><span class="line">    // number of collisions (approximately 8 at default load factor).</span><br><span class="line">    h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);</span><br><span class="line">    return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);</span><br><span class="line">&#125;</span><br><span class="line">This function ensures that hashCodes that differ only by</span><br><span class="line"></span><br><span class="line">JDK1.8</span><br><span class="line">static final int hash(Object key) &#123;</span><br><span class="line">    int h;</span><br><span class="line">    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当数组长度为2的n次幂的时候，不同的key算得得index相同的几率较小，那么数据在数组上分布就比较均匀，也就是说碰撞的几率小，相对的，查询的时候就不用遍历某个位置上的链表。</p>
+<p>知识点：<br>当length总是2的n次方时，  h &amp; (length - 1)   等价于   hash对length取模      ，但是&amp;比%具有更高的效率；<br>在n - 1为15(0x1111)时，其实散列真正生效的只是低4bit的有效位，容易碰撞；</p>
+<p>JDK1.8<br>通过hashCode()的高16位异或低16位实现的：(h = k.hashCode()) ^ (h &gt;&gt;&gt; 16)，主要是从速度、功效、质量来考虑的，这么做可以在数组table的length比较小的时候，也能保证考虑到高低Bit都参与到Hash的计算中，同时不会有太大的开销。</p>
+<h3 id="modCount干什么用？"><a href="#modCount干什么用？" class="headerlink" title="modCount干什么用？"></a>modCount干什么用？</h3><p>HashMap中有一个成员变量modCount，这个用来实现“fast-fail”机制（也就是快速失败）。所谓快速失败就是在并发集合中，其进行迭代操作时，若有其他线程对其结构性的修改，这是迭代器会立马感知到，当 expectedModCount！= modCount，立刻抛出ConcurrentModificationException异常，不需要等待迭代完成之后才告诉你已经出错。</p>
+<h3 id="get-如何实现"><a href="#get-如何实现" class="headerlink" title="get 如何实现"></a>get 如何实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">    if (key == null)</span><br><span class="line">        return getForNullKey();</span><br><span class="line">    int hash = hash(key.hashCode());</span><br><span class="line">    for (Entry&lt;K,V&gt; e = table[indexFor(hash, table.length)];</span><br><span class="line">         e != null;</span><br><span class="line">         e = e.next) &#123;</span><br><span class="line">        Object k;</span><br><span class="line">        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))</span><br><span class="line">            return e.value;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private V getForNullKey() &#123;</span><br><span class="line">    for (Entry&lt;K,V&gt; e = table[0]; e != null; e = e.next) &#123;</span><br><span class="line">        if (e.key == null)</span><br><span class="line">            return e.value;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>1、判断key值是否为null,在table[0]的链表中寻找;</p>
+<p>2、计算hash值，进而获得table中的index值</p>
+<p>3、在table[index]的链表中寻找，根据hash值和equals()方法获得相应的value。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您得赞助是最大的动力<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/weixinpay1.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+        <div style="color:#666">
+          <span id="busuanzi_container_page_pv">
+            本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+          </span>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -232,7 +293,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -245,67 +306,119 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" class="archive-article-date">
-  	<time datetime="2018-07-04T13:22:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/">“使用Atlas实现mysql读写分离 实现数据库负载均衡”</a>
-    </h1>
-  
+</div>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		
-		</ul>
-	</div>
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/07/16/hashMap底层源码解读-md/" alt="微信分享二维码">
+    </div>
+</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/mysql//" class="article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
 
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
   </div>
+
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">“使用Atlas实现mysql读写分离 实现数据库负载均衡”</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#hashCode-说起"><span class="toc-number">1.</span> <span class="toc-text">hashCode() 说起</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是HashMap-主题"><span class="toc-number">2.</span> <span class="toc-text">什么是HashMap? 主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#put操作做了什么？"><span class="toc-number">3.</span> <span class="toc-text">put操作做了什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hash算法是什么？"><span class="toc-number">4.</span> <span class="toc-text">hash算法是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#modCount干什么用？"><span class="toc-number">5.</span> <span class="toc-text">modCount干什么用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get-如何实现"><span class="toc-number">6.</span> <span class="toc-text">get 如何实现</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
   
 
-    
+  
 
+  
+
+  
+
+  
 
           </div>
         </div>
@@ -329,8 +442,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

@@ -6,19 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018/7 | 王武的技术博客</title>
+  <title>“使用Atlas实现mysql读写分离 实现数据库负载均衡” | 王武的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="嗨大家好欢迎关注我的博客">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="王武的技术博客">
-<meta property="og:url" content="http://yoursite.com/archives/2018/07/index.html">
+  <meta name="description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
+<meta property="og:url" content="http://yoursite.com/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/index.html">
 <meta property="og:site_name" content="王武的技术博客">
-<meta property="og:description" content="嗨大家好欢迎关注我的博客">
+<meta property="og:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/img/mysql/20171008201450434.png">
+<meta property="og:image" content="http://img.blog.csdn.net/20171008205057870?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-07-08T09:34:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王武的技术博客">
-<meta name="twitter:description" content="嗨大家好欢迎关注我的博客">
+<meta name="twitter:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
+<meta name="twitter:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
+<meta name="twitter:image" content="http://yoursite.com/img/mysql/20171008201450434.png">
   
     <link rel="alternative" href="/atom.xml" title="王武的技术博客" type="application/atom+xml">
   
@@ -191,85 +195,106 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-使用Atlas实现mysql读写分离 实现数据库负载均衡" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/16/hashMap底层源码解读-md/" class="archive-article-date">
-  	<time datetime="2018-07-16T10:25:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/16/hashMap底层源码解读-md/">“hashMap底层源码解读.md”</a>
+    <h1 class="article-title" itemprop="name">
+      “使用Atlas实现mysql读写分离 实现数据库负载均衡”
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">java 源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/JAVA基础//" class="article-tag-list-link color2">JAVA基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" class="archive-article-date">
+        
+        <a href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" class="archive-article-date">
   	<time datetime="2018-07-04T13:22:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-04</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/">“使用Atlas实现mysql读写分离 实现数据库负载均衡”</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。</p>
+<p>主要功能：</p>
+<p>1.读写分离</p>
+<p>2.从库负载均衡</p>
+<p>3.IP过滤</p>
+<p>4.自动分表</p>
+<p>5.DBA可平滑上下线DB</p>
+<p>6.自动摘除宕机的DB</p>
+<h3 id="二、Atlas相对于官方MySQL-Proxy的优势"><a href="#二、Atlas相对于官方MySQL-Proxy的优势" class="headerlink" title="二、Atlas相对于官方MySQL-Proxy的优势"></a>二、Atlas相对于官方MySQL-Proxy的优势</h3><hr>
+<p>1.将主流程中所有Lua代码用C重写，Lua仅用于管理接口</p>
+<p>2.重写网络模型、线程模型</p>
+<p>3.实现了真正意义上的连接池</p>
+<p>4.优化了锁机制，性能提高数十倍</p>
+<h3 id="三、安装与配置"><a href="#三、安装与配置" class="headerlink" title="三、安装与配置"></a>三、安装与配置</h3><hr>
+<h4 id="3-1注意事项"><a href="#3-1注意事项" class="headerlink" title="3.1注意事项"></a>3.1注意事项</h4><p> (1).Atlas只能安装运行在64位的系统上。</p>
+<p>(2).Centos 5.X安装 Atlas-XX.el5.x86_64.rpm，Centos 6.X安装Atlas-XX.el6.x86_64.rpm。</p>
+<p>(3).如果执行sudo rpm –i Atlas-XX.el6.x86_64.rpm，提示类似：“file /usr/local/mysql-proxy/bin/encrypt from install of Atlas-2.0.1-1.x86_64 conflicts with file from package Atlas-1.0.3-1.x86_64”错误，则表示该系统之前已经安装过Atlas-1.0.3-1.x86_64，需要执行：sudo rpm –e Atlas-1.0.3-1.x86_64，将之前安装的Atlas删除掉，再执行sudo rpm –i Atlas-XX.el6.x86_64.rpm安装新版本的Atlas。</p>
+<p>(4).后端mysql版本应大于5.1，建议使用Mysql 5.6</p>
+<p>Atlas 的安装是非常简单的，安装包的下载地址<a href="https://github.com/Qihoo360/Atlas/releases；" target="_blank" rel="noopener">https://github.com/Qihoo360/Atlas/releases；</a></p>
+<h4 id="3-2-上传安装"><a href="#3-2-上传安装" class="headerlink" title="3.2 上传安装"></a>3.2 上传安装</h4><p>把安装包上传到/usr/local/mysql-proxy,然后执行安装命令；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm –i Atlas-XX.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/mysql/20171008201450434.png" alt="安装"></p>
+<h4 id="3-3-配置"><a href="#3-3-配置" class="headerlink" title="3.3 配置"></a>3.3 配置</h4><p>由于之前已经搭建好一主多从的环境了，master ip：192.168.119.129，slave ip：192.168.119.128；<br>假如你还没这样的环境可以参考我的这篇文章[《mysql 一主多从配置说明》 ],那么我们现在开始来配置Atlas的读写分离；</p>
+<p>在/usr/local/conf 目录下找到test.cnf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#Atlas后端连接的MySQL主库的IP和端口，可设置多项，用逗号分隔</span><br><span class="line">proxy-backend-addresses = 127.0.0.1:3306</span><br><span class="line"></span><br><span class="line">#Atlas后端连接的MySQL从库的IP和端口，@后面的数字代表权重，用来作负载均衡，若省略则默认为1，可设置多项，用逗号分隔</span><br><span class="line">proxy-read-only-backend-addresses =192.168.119.128:3306@1</span><br><span class="line"></span><br><span class="line">#用户名与其对应的加密过的MySQL密码，密码使用PREFIX/bin目录下的加密程序encrypt加密，下行的user1和user2为示例，将其替换为你的MySQL的用&gt;户名和加密密码！</span><br><span class="line">pwds = root:DAJnl8cVzy8=</span><br><span class="line"></span><br><span class="line">#SQL日志的开关，可设置为OFF、ON、REALTIME，OFF代表不记录SQL日志，ON代表记录SQL日志，REALTIME代表记录SQL日志且实时写入磁盘，默认为OFF 这里为了查询效果我把SQL记录到日志里</span><br><span class="line">sql-log = REALTIME</span><br><span class="line"></span><br><span class="line">#实例名称，用于同一台机器上多个Atlas实例间的区分</span><br><span class="line">#instance = test</span><br></pre></td></tr></table></figure>
+<p>好了，现在配置完成，我们开始启动服务；</p>
+<h4 id="3-4-启动和关闭服务"><a href="#3-4-启动和关闭服务" class="headerlink" title="3.4 启动和关闭服务"></a>3.4 启动和关闭服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#  cd /usr/local/mysql-proxy/bin</span><br><span class="line">#  ./mysql-proxyd test start        # 启动</span><br><span class="line">#  ./mysql-proxyd test stop         # 关闭</span><br><span class="line">#  ./mysql-proxyd test status       # 查看状态</span><br><span class="line">#  ./mysql-proxyd test restart      # 重启</span><br></pre></td></tr></table></figure>
+<p>我们先用客户连接试试；</p>
+<p>点击“连接测试” “连接成功”就表示是通过Atlas代理连接数据库的</p>
+<h4 id="3-5-检验读写分离"><a href="#3-5-检验读写分离" class="headerlink" title="3.5 检验读写分离"></a>3.5 检验读写分离</h4><p>实现目标，我们通过代理的查询是不是去查slave库的，插入更新是不是在master库的。</p>
+<p>验证方法，通过代理连接的数据库，通过查询、插入、更新数据；然后看看Atlas的sql日志；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO t_test_user(age,name) VALUES(&apos;20&apos;,&apos;hello Atlas&apos;);</span><br><span class="line">update t_test_user SET age=&apos;25&apos; WHERE id=&apos;10&apos;;</span><br><span class="line">SELECT * from t_test_user;</span><br></pre></td></tr></table></figure>
+<p>开始查看sql日志</p>
+<p><img src="http://img.blog.csdn.net/20171008205057870?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>更多配置请参考<br><a href="https://github.com/Qihoo360/Atlas/wiki" target="_blank" rel="noopener">https://github.com/Qihoo360/Atlas/wiki</a></p>
+<p>《参照资料》<br><a href="https://github.com/Qihoo360/Atlas" target="_blank" rel="noopener">https://github.com/Qihoo360/Atlas</a></p>
 
-        <div class="article-info info-on-right">
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您得赞助是最大的动力<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/weixinpay1.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+        <div style="color:#666">
+          <span id="busuanzi_container_page_pv">
+            本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+          </span>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -281,7 +306,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -294,18 +319,110 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/07/16/hashMap底层源码解读-md/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          “hashMap底层源码解读.md”
+        
+      </div>
+    </a>
   
   
-    </div></section>
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
   
 
-    
+  
 
+  
+
+  
+
+  
 
           </div>
         </div>
@@ -329,8 +446,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

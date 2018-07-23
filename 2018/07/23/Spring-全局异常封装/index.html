@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
-  <title>Tag: java 源码 | 王武的技术博客</title>
+  <title>Spring 全局异常封装 | 王武的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="嗨大家好欢迎关注我的博客">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="王武的技术博客">
-<meta property="og:url" content="http://blog.wwudev.cn/tags/java-源码/index.html">
+  <meta name="description" content="categories: springSpring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知对于的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现">
+<meta name="keywords" content="异常Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 全局异常封装">
+<meta property="og:url" content="http://blog.wwudev.cn/2018/07/23/Spring-全局异常封装/index.html">
 <meta property="og:site_name" content="王武的技术博客">
-<meta property="og:description" content="嗨大家好欢迎关注我的博客">
+<meta property="og:description" content="categories: springSpring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知对于的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-07-23T13:43:04.372Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王武的技术博客">
-<meta name="twitter:description" content="嗨大家好欢迎关注我的博客">
+<meta name="twitter:title" content="Spring 全局异常封装">
+<meta name="twitter:description" content="categories: springSpring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知对于的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现">
   
     <link rel="alternative" href="/atom.xml" title="王武的技术博客" type="application/atom+xml">
   
@@ -197,72 +198,214 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Spring-全局异常封装" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/16/hashMap底层源码解读-md/" class="archive-article-date">
-  	<time datetime="2018-07-16T10:25:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/16/hashMap底层源码解读-md/">“hashMap底层源码解读.md”</a>
+    <h1 class="article-title" itemprop="name">
+      Spring 全局异常封装
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/07/23/Spring-全局异常封装/" class="archive-article-date">
+  	<time datetime="2018-07-23T13:39:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>categories:</p>
+<h2 id="spring"><a href="#spring" class="headerlink" title="spring"></a>spring</h2><p>Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知对于的维护人员；能够及时知道程序出问题；</p>
+<p>实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；</p>
+<ul>
+<li><p>1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；</p>
+</li>
+<li><p>2.使用@ControllerAdvice方式</p>
+</li>
+<li><p>3.实现HandlerExceptionResolver接口的方式；</p>
+</li>
+</ul>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><blockquote>
+<p>第一种方式</p>
+</blockquote>
+<p>使用第一种情况的的话，这种方式是比较直接，但是不好的是带来有太多的冗余，不利于阅读；<br>实现代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 获取用户详细信息</span><br><span class="line"> * @param param</span><br><span class="line"> * @return</span><br><span class="line"> */</span><br><span class="line">@RequestMapping(value=&quot;/getuserinfo/&#123;id&#125;&quot;,method = RequestMethod.POST)</span><br><span class="line">public ResData getUserInfo(@RequestBody UserInfo user)&#123;</span><br><span class="line">    ResData resData = new ResData();</span><br><span class="line">    //</span><br><span class="line">    try&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;catch(Exception)&#123;</span><br><span class="line">        //</span><br><span class="line">        resData.setCode(-1);</span><br><span class="line">        resData.setMsg(&quot;系统繁忙！&quot;);</span><br><span class="line">        Logger.error(&quot;...&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    return resData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>第二种方式:</p>
+</blockquote>
+<p>这是基于API接口统一的异常处理，纯微服务Restful接口的话，推荐使用此方式，</p>
+<p>只需加上@ControllerAdvice注解；可以统一封装已知或未知的异常类型，如某业务模块下异常的类型，并设置对于的返回内容；</p>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @Title:  &lt;p&gt;</span><br><span class="line"> *          实现全局的 Controller 层的异常处理 这是基于Restful的方式，</span><br><span class="line"> *          &lt;/p&gt;</span><br><span class="line"> * @author  wwupower</span><br><span class="line"> * @since   JDK1.8</span><br><span class="line"> * @history 2018年4月20日</span><br><span class="line"> */</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class GlobalExceptionHandler &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 统一全局异常返回码</span><br><span class="line">     */</span><br><span class="line">    public static final  Integer GLOHAL_ERROR_CODE = -1;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 统一的正常访问的状态吗</span><br><span class="line">     */</span><br><span class="line">    public static final  Integer GLOHAL_SUCCESS_CODE = 0;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 处理未知异常</span><br><span class="line">     * @param ex</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @ExceptionHandler()</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public AjaxJson allExceptionHandler(Exception ex)&#123;</span><br><span class="line">        return setErrorMsg(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 处理所有业务异常</span><br><span class="line">     * @param ex</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @ExceptionHandler(BaseException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    AjaxJson handleBusinessException(BaseException ex) &#123;</span><br><span class="line">        return setErrorMsg(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 处理所有业务异常</span><br><span class="line">     * @param ex</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @ExceptionHandler(PlatformException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    AjaxJson handleBusinessException(PlatformException ex)&#123;</span><br><span class="line">        return setErrorMsg(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * controller 异常消息铺货</span><br><span class="line">     * @param throwable</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public AjaxJson setErrorMsg(Throwable throwable)&#123;</span><br><span class="line">        AjaxJson json = new AjaxJson();</span><br><span class="line">        json.setCode(GLOHAL_ERROR_CODE);</span><br><span class="line">        if(StringUtil.isEmpty(throwable.getMessage()))&#123;</span><br><span class="line">            json.setMsg(&quot;系统繁忙，稍后再试&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        LoggerUtil.error(this.getClass(),throwable.getMessage(),throwable);</span><br><span class="line">        return json;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第三种</p>
+</blockquote>
+<p>这种方式需要实现HandlerExceptionResolver接口，并返回一个ModelAndView页面，但是我们开发过程中，不仅仅是普通的web页面请求，还有Ajax请求的，Ajax错误请求返回一个页面很是很不科学，因此做了简单的封装，具体代码实现如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @Title: &lt;p&gt;</span><br><span class="line"> *          实现全局的 Controller 层的异常处理 这是基于Restful和普通web跳转的统一异常处理；</span><br><span class="line"> *          &lt;/p&gt;</span><br><span class="line"> * @author  wwupower</span><br><span class="line"> * @since   JDK1.8</span><br><span class="line"> * @history 2018年4月20日</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class GlobalExceptionResolver implements HandlerExceptionResolver &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 统一异常拦截</span><br><span class="line">     * @param request</span><br><span class="line">     * @param response</span><br><span class="line">     * @param object</span><br><span class="line">     * @param exception</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public ModelAndView resolveException(HttpServletRequest request,</span><br><span class="line">                                         HttpServletResponse response, Object object, Exception exception) &#123;</span><br><span class="line">        // 判断是否ajax请求</span><br><span class="line">        if (!isAjaxRequst(request)) &#123;</span><br><span class="line">            //  系统异常 此处应分系统异常和业务异常；</span><br><span class="line">            Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();</span><br><span class="line">            map.put(&quot;success&quot;, false);</span><br><span class="line">            map.put(&quot;msg&quot;, exception.getMessage());</span><br><span class="line">            //对于非ajax请求，我们都统一跳转到error.jsp页面</span><br><span class="line">            LoggerUtil.error(this.getClass(),exception.getMessage(),exception);</span><br><span class="line">            return new ModelAndView(&quot;error/error&quot;, map);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // 如果是ajax请求，JSON格式返回</span><br><span class="line">            AjaxJson json = new AjaxJson();</span><br><span class="line">            try &#123;</span><br><span class="line">                response.setContentType(&quot;application/json;charset=UTF-8&quot;);</span><br><span class="line">                PrintWriter writer = response.getWriter();</span><br><span class="line">                //获取错误码</span><br><span class="line">                try &#123;</span><br><span class="line">                    BaseException baseException = (BaseException) exception;</span><br><span class="line">                    if(StringUtils.isNotEmpty(baseException.getCode())) &#123;</span><br><span class="line">                        json.setCode(Integer.parseInt(baseException.getCode()));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; catch (ClassCastException e)&#123;</span><br><span class="line">                    json.setCode(ApiGlobalException.GLOHAL_ERROR_CODE);</span><br><span class="line">                &#125; catch (NumberFormatException e)&#123;</span><br><span class="line">                    json.setCode(ApiGlobalException.GLOHAL_ERROR_CODE);</span><br><span class="line">                &#125;</span><br><span class="line">                if (StringUtil.isNotEmpty(exception.getMessage())) &#123;</span><br><span class="line">                    json.setMsg(exception.getMessage());</span><br><span class="line">                &#125;</span><br><span class="line">                writer.write(JsonHelper.parseObject(json));</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">                LoggerUtil.error(this.getClass(),exception.getMessage(),exception);</span><br><span class="line">                return null;</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                LoggerUtil.error(this.getClass(), &quot;show exception error:&#123;&#125;&quot;, e.getMessage());</span><br><span class="line">                //异常中的异常返回到错误页面</span><br><span class="line">                return null;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 判断是否是Ajax请求</span><br><span class="line">     * @param request</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public boolean isAjaxRequst(HttpServletRequest request)&#123;</span><br><span class="line">        return request.getHeader(&quot;accept&quot;).indexOf(&quot;application/json&quot;) &gt; -1</span><br><span class="line">                || (request.getHeader(&quot;X-Requested-With&quot;) != null &amp;&amp; request.getHeader(</span><br><span class="line">                &quot;X-Requested-With&quot;).indexOf(&quot;XMLHttpRequest&quot;) &gt; -1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Spring MVC中，所有用于处理在请求映射和请求处理过程中抛出的异常的类，都要实现HandlerExceptionResolver接口。AbstractHandlerExceptionResolver实现该接口和Orderd接口，是HandlerExceptionResolver类的实现的基类。ResponseStatusExceptionResolver等具体的异常处理类均在AbstractHandlerExceptionResolver之上，实现了具体的异常处理方式。一个基于Spring MVC的Web应用程序中，可以存在多个实现了HandlerExceptionResolver的异常处理类，他们的执行顺序，由其order属性决定, order值越小，越是优先执行, 在执行到第一个返回不是null的ModelAndView的Resolver时</p>
+<p>参考资料</p>
+<p><a href="http://www.cnblogs.com/xinzhao/p/4902295.html" target="_blank" rel="noopener">http://www.cnblogs.com/xinzhao/p/4902295.html</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您得赞助是最大的动力<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/weixinpay1.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+        <div style="color:#666">
+          <span id="busuanzi_container_page_pv">
+            本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+          </span>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">java 源码</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">异常Spring</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/JAVA基础//" class="article-tag-list-link color2">JAVA基础</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://blog.wwudev.cn/2018/07/23/Spring-全局异常封装/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/07/16/hashMap底层源码解读-md/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">“hashMap底层源码解读.md”</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
   
 
-    
+  
 
+  
+
+  
+
+  
 
           </div>
         </div>
@@ -286,9 +429,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

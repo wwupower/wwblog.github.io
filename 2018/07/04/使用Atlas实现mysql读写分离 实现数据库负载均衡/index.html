@@ -5,24 +5,24 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>“使用Atlas实现mysql读写分离 实现数据库负载均衡” | 王武的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
 <meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
-<meta property="og:url" content="http://yoursite.com/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/index.html">
+<meta property="og:url" content="http://blog.wwudev.cn/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/index.html">
 <meta property="og:site_name" content="王武的技术博客">
 <meta property="og:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/img/mysql/20171008201450434.png">
+<meta property="og:image" content="http://blog.wwudev.cn/img/mysql/20171008201450434.png">
 <meta property="og:image" content="http://img.blog.csdn.net/20171008205057870?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:updated_time" content="2018-07-08T09:34:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
 <meta name="twitter:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
-<meta name="twitter:image" content="http://yoursite.com/img/mysql/20171008201450434.png">
+<meta name="twitter:image" content="http://blog.wwudev.cn/img/mysql/20171008201450434.png">
   
     <link rel="alternative" href="/atom.xml" title="王武的技术博客" type="application/atom+xml">
   
@@ -68,6 +68,8 @@
                 <li><a href="/categories/随笔/">随笔</a></li>
             
                 <li><a href="/categories/java基础/">java基础</a></li>
+            
+                <li><a href="/categories/spring/">spring</a></li>
             
                 <li><a href="/categories/mysql/">mysql</a></li>
             
@@ -150,6 +152,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -170,17 +174,19 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 16.666666666666668%"><a href="/">主页</a></li>
+					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/categories/随笔/">随笔</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/随笔/">随笔</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/categories/java基础/">java基础</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/java基础/">java基础</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/categories/mysql/">mysql</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/spring/">spring</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/categories/读书笔记/">读书笔记</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/mysql/">mysql</a></li>
 		        
-					<li style="width: 16.666666666666668%"><a href="/categories/前端/">前端</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/前端/">前端</a></li>
 		        
 				</ul>
 			</nav>
@@ -367,7 +373,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://blog.wwudev.cn/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -517,6 +523,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
               </li>
              
               <li class="article-tag-list-item">

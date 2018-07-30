@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>Spring 全局异常封装 | 王武的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerExceptionRe">
+  <meta name="description" content="说明Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerException">
 <meta name="keywords" content="异常Spring">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring 全局异常封装">
 <meta property="og:url" content="http://blog.wwudev.cn/2018/07/23/Spring-全局异常封装/index.html">
 <meta property="og:site_name" content="王武的技术博客">
-<meta property="og:description" content="Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerExceptionRe">
+<meta property="og:description" content="说明Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerException">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-23T13:50:30.877Z">
+<meta property="og:updated_time" content="2018-07-30T14:20:29.579Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring 全局异常封装">
-<meta name="twitter:description" content="Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerExceptionRe">
+<meta name="twitter:description" content="说明Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题； 实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；  1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；  2.使用@ControllerAdvice方式  3.实现HandlerException">
   
     <link rel="alternative" href="/atom.xml" title="王武的技术博客" type="application/atom+xml">
   
@@ -218,7 +218,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题；</p>
+        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>Spring 框架里，统一的异常捕获是很重要的，比如我们可以出现异常短信或者邮件通知相关的维护人员；能够及时知道程序出问题；</p>
 <p>实现controller的异常捕获并统一响应给客户端一般由这三种方式去实现；</p>
 <ul>
 <li><p>1.try{}catch(Exception){} 把所有的异常都捕获，并根据异常返回给客户端；</p>
@@ -228,7 +228,7 @@
 <li><p>3.实现HandlerExceptionResolver接口的方式；</p>
 </li>
 </ul>
-<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><blockquote>
+<h3 id="具体实现方式"><a href="#具体实现方式" class="headerlink" title="具体实现方式"></a>具体实现方式</h3><blockquote>
 <p>第一种方式</p>
 </blockquote>
 <p>使用第一种情况的的话，这种方式是比较直接，但是不好的是带来有太多的冗余，不利于阅读；<br>实现代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取用户详细信息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> param</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"/getuserinfo/&#123;id&#125;"</span>,method = RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> ResData <span class="title">getUserInfo</span><span class="params">(@RequestBody UserInfo user)</span></span>&#123;</span><br><span class="line">    ResData resData = <span class="keyword">new</span> ResData();</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;<span class="keyword">catch</span>(Exception)&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        resData.setCode(-<span class="number">1</span>);</span><br><span class="line">        resData.setMsg(<span class="string">"系统繁忙！"</span>);</span><br><span class="line">        Logger.error(<span class="string">"..."</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> resData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -418,7 +418,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现"><span class="toc-number">1.</span> <span class="toc-text">具体实现</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#说明"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#具体实现方式"><span class="toc-number">2.</span> <span class="toc-text">具体实现方式</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -531,11 +531,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">

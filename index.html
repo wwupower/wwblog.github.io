@@ -199,6 +199,106 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Colletions-sort-list-总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/30/Colletions-sort-list-总结/">Colletions.sort(list)总结</a>
+    </h1>
+  
+
+        
+        <a href="/2018/07/30/Colletions-sort-list-总结/" class="archive-article-date">
+  	<time datetime="2018-07-30T14:12:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。<br>在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。</p>
+<blockquote>
+<p>jDK6</p>
+</blockquote>
+<p>而Arrays.sort()，对原始类型(int[],double[],char[],byte[])，<br>JDK6里用的是快速排序，对于对象类型(Object[])，JDK6则使用归并排序。</p>
+<blockquote>
+<p>JDK7</p>
+</blockquote>
+<p>到了JDK7，快速排序升级为双基准快排(双基准快排 vs 三路快排)；归并排序升级为归并排序的改进版TimSort，一个JDK的自我进化。</p>
+<blockquote>
+<p>JDK8</p>
+</blockquote>
+<p>再到了JDK8， 对大集合增加了Arrays.parallelSort()函数，使用fork-Join框架，充分利用多核，对大的集合进行切分然后再归并排序，而在小的连续片段里，依然使用TimSort与DualPivotQuickSort。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/java基础//" class="article-tag-list-link color2">java基础</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/07/30/Colletions-sort-list-总结/">展开全文 >></a>
+        </p>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-Spring-全局异常封装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -644,11 +744,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
               </li>
              
               <li class="article-tag-list-item">

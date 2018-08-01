@@ -67,6 +67,8 @@
             
                 <li><a href="/categories/spring/">spring</a></li>
             
+                <li><a href="/categories/持续集成/">持续集成</a></li>
+            
                 <li><a href="/categories/mysql/">mysql</a></li>
             
                 <li><a href="/categories/读书笔记/">读书笔记</a></li>
@@ -150,6 +152,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -170,19 +174,21 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
+					<li style="width: 12.5%"><a href="/">主页</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/随笔/">随笔</a></li>
+					<li style="width: 12.5%"><a href="/categories/随笔/">随笔</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/java基础/">java基础</a></li>
+					<li style="width: 12.5%"><a href="/categories/java基础/">java基础</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/spring/">spring</a></li>
+					<li style="width: 12.5%"><a href="/categories/spring/">spring</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/mysql/">mysql</a></li>
+					<li style="width: 12.5%"><a href="/categories/持续集成/">持续集成</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/读书笔记/">读书笔记</a></li>
+					<li style="width: 12.5%"><a href="/categories/mysql/">mysql</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/前端/">前端</a></li>
+					<li style="width: 12.5%"><a href="/categories/读书笔记/">读书笔记</a></li>
+		        
+					<li style="width: 12.5%"><a href="/categories/前端/">前端</a></li>
 		        
 				</ul>
 			</nav>
@@ -198,6 +204,115 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-git基本概念和核心命令使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/01/git基本概念和核心命令使用/">git基本概念和核心命令使用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/01/git基本概念和核心命令使用/" class="archive-article-date">
+  	<time datetime="2018-08-01T12:10:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="诞生背景"><a href="#诞生背景" class="headerlink" title="诞生背景"></a>诞生背景</h2><p>事实是，在2002年以前，世界各地的志愿者把源代码文件通过diff的方式发给Linus，然后由Linus本人通过手工方式合并代码！</p>
+<p>你也许会想，为什么Linus不把Linux代码放到版本控制系统里呢？不是有CVS、SVN这些免费的版本控制系统吗？因为Linus坚定地反对CVS和SVN，这些集中式的版本控制系统不但速度慢，而且必须联网才能使用。有一些商用的版本控制系统，虽然比CVS、SVN好用，但那是付费的，和Linux的开源精神不符。</p>
+<p>不过，到了2002年，Linux系统已经发展了十年了，代码库之大让Linus很难继续通过手工方式管理了，社区的弟兄们也对这种方式表达了强烈不满，于是Linus选择了一个商业的版本控制系统BitKeeper，BitKeeper的东家BitMover公司出于人道主义精神，授权Linux社区免费使用这个版本控制系统。</p>
+<p>安定团结的大好局面在2005年就被打破了，原因是Linux社区牛人聚集，不免沾染了一些梁山好汉的江湖习气。开发Samba的Andrew试图破解BitKeeper的协议（这么干的其实也不只他一个），被BitMover公司发现了（监控工作做得不错！），于是BitMover公司怒了，要收回Linux社区的免费使用权。</p>
+<p>Linus可以向BitMover公司道个歉，保证以后严格管教弟兄们，嗯，这是不可能的。实际情况是这样的：</p>
+<p>Linus花了两周时间自己用C写了一个分布式版本控制系统，这就是Git！一个月之内，Linux系统的源码已经由Git管理了！牛是怎么定义的呢？大家可以体会一下。</p>
+<p>Git迅速成为最流行的分布式版本控制系统，尤其是2008年，GitHub网站上线了，它为开源项目免费提供Git存储，无数开源项目开始迁移至GitHub，包括jQuery，PHP，Ruby等等。</p>
+<p>历史就是这么偶然，如果不是当年BitMover公司威胁Linux社区，可能现在我们就没有免费而超级好用的Git了。</p>
+<p>感觉本站内容不错，读后有收获？</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>git是一个分布式的版本管理系统</p>
+<h2 id="git和svn的区别"><a href="#git和svn的区别" class="headerlink" title="git和svn的区别"></a>git和svn的区别</h2><ul>
+<li>分布式和集中式</li>
+<li>储存方式  git基于key/value的方式存储文件，svn 是原始文件的储存方式(新版svn已改成元数据存储)</li>
+<li>使用方式  SVN只需要commint 而GIT需要 add、commint、push 三个步骤</li>
+</ul>
+<h2 id="git核心命令和使用"><a href="#git核心命令和使用" class="headerlink" title="git核心命令和使用"></a>git核心命令和使用</h2><h3 id="初始化提交"><a href="#初始化提交" class="headerlink" title="初始化提交"></a>初始化提交</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>基于远程仓库克隆至本地</span><br><span class="line">git clone &lt;remote_url&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>当前目录初始化为git 本地仓库</span><br><span class="line">git init  &lt;directory&gt;</span><br><span class="line"><span class="meta">#</span>添加指定文件至暂存区</span><br><span class="line">git add &lt;fileName&gt;</span><br><span class="line"><span class="meta">#</span>添加指定目录至暂存区</span><br><span class="line">git add &lt;directory&gt;</span><br><span class="line"><span class="meta">#</span>添加所有</span><br><span class="line">git add -A</span><br><span class="line"><span class="meta">#</span>将指定目录及子目录移除出暂存区</span><br><span class="line">git rm --cached target -r</span><br><span class="line"><span class="meta">#</span>添加勿略配置文件 .gitignore</span><br><span class="line">本地提交</span><br><span class="line"><span class="meta">#</span>提交至本地仓库</span><br><span class="line">git commit file -m '提交评论'</span><br><span class="line"><span class="meta">#</span>快捷提交至本地仓库</span><br><span class="line">git commit -am '快添加与提交'</span><br><span class="line"><span class="meta">$</span> git push origin test:master           // 提交本地test分支作为远程的master分支</span><br><span class="line"><span class="meta">$</span> git push origin dev:dev              // 提交本地dev分支作为远程的dev分支</span><br><span class="line">等价于 $ git push origin dev</span><br></pre></td></tr></table></figure>
+<h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>查看当前分支</span><br><span class="line">git branch [-avv]</span><br><span class="line"><span class="meta">#</span>基于当前分支新建分支</span><br><span class="line">git branch &lt;branch name&gt;</span><br><span class="line"><span class="meta">#</span>基于提交新建分支</span><br><span class="line">git branch &lt;branch name&gt; &lt;commit id&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">$</span> git branch -d &#123;dev&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>切换分支</span><br><span class="line">git checkout &lt;branch name&gt;</span><br><span class="line"><span class="meta">#</span>合并分支</span><br><span class="line">git merge &lt;merge target&gt;</span><br><span class="line"><span class="meta">#</span>解决冲突，如果因冲突导致自动合并失败，此时 status 为mergeing 状态.</span><br><span class="line"><span class="meta">#</span>需要手动修改后重新提交（commit）</span><br></pre></td></tr></table></figure>
+<h3 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>添加远程地址</span><br><span class="line">git remote add origin http:xxx.xxx</span><br><span class="line"><span class="meta">#</span>删除远程地址</span><br><span class="line">git remote remove origin </span><br><span class="line"><span class="meta">#</span>上传新分支至远程</span><br><span class="line">git push --set-upstream origin master  #origin别名 master远程分支名</span><br><span class="line"><span class="meta">#</span>将本地分支与远程建立关联</span><br><span class="line">git branch --track --set-upstream-to=origin/dev dev</span><br></pre></td></tr></table></figure>
+<h3 id="tag-管理"><a href="#tag-管理" class="headerlink" title="tag 管理"></a>tag 管理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#查看当前</span><br><span class="line">git tag</span><br><span class="line">#创建分支</span><br><span class="line">git tag &lt;tag name&gt; &lt;branch name&gt;</span><br><span class="line">#删除分支</span><br><span class="line">git tag -d &lt;tag name&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#查看当前分支下所有提交日志</span><br><span class="line">git log</span><br><span class="line">#查看当前分支下所有提交日志</span><br><span class="line">git log &#123;branch&#125;</span><br><span class="line"># 单行显示日志</span><br><span class="line">git log --oneline</span><br><span class="line"># 比较两个版本的区别</span><br><span class="line">git log master..dev</span><br><span class="line"></span><br><span class="line">#以图表的方式显示提交合并网络</span><br><span class="line">git log --pretty=format:&apos;%h %s&apos; --graph</span><br></pre></td></tr></table></figure>
+<p>参考资料</p>
+<p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">git 版本管理  持续集成</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/持续集成//" class="article-tag-list-link color5">持续集成</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/01/git基本概念和核心命令使用/">展开全文 >></a>
+        </p>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
   
     <article id="post-Colletions-sort-list-总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -744,11 +859,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">git 版本管理  持续集成</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -205,6 +205,120 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mybatis源码初探" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/24/mybatis源码初探/">mybatis源码初探</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/24/mybatis源码初探/" class="archive-article-date">
+  	<time datetime="2018-08-23T16:18:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、Mybatis-简单项目搭建"><a href="#一、Mybatis-简单项目搭建" class="headerlink" title="一、Mybatis 简单项目搭建"></a>一、Mybatis 简单项目搭建</h3><p> pom.xml maven 依赖<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.mybatis&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mybatis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.4.4&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、配置mybatis配置文件"><a href="#二、配置mybatis配置文件" class="headerlink" title="二、配置mybatis配置文件"></a>二、配置mybatis配置文件</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><br><span class="line">&lt;!DOCTYPE configuration</span><br><span class="line">        PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">    &lt;typeAliases&gt;</span><br><span class="line">        &lt;typeAlias type=&quot;com.power.mybatis.pojo.User&quot; alias=&quot;user&quot;&gt;&lt;/typeAlias&gt;</span><br><span class="line">    &lt;/typeAliases&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;!--监控 sql 埋点 分页--&gt;</span><br><span class="line">        &lt;plugin interceptor=&quot;com.power.mybatis.plugin.SqlPrintInterceptor&quot;&gt;&lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">    &lt;environments default=&quot;development&quot;&gt;</span><br><span class="line">        &lt;environment id=&quot;development&quot;&gt;</span><br><span class="line">            &lt;transactionManager type=&quot;JDBC&quot;/&gt;</span><br><span class="line">            &lt;dataSource type=&quot;POOLED&quot;&gt;</span><br><span class="line">                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/power-demo&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">                &lt;property name=&quot;password&quot; value=&quot;root&quot;/&gt;</span><br><span class="line">            &lt;/dataSource&gt;</span><br><span class="line">        &lt;/environment&gt;</span><br><span class="line">    &lt;/environments&gt;</span><br><span class="line"></span><br><span class="line">    &lt;mappers&gt;</span><br><span class="line">      &lt;!--  &lt;mapper resource=&quot;mybatis/UserMapper2.xml&quot;/&gt;--&gt;</span><br><span class="line">      &lt;!--  &lt;mapper class=&quot;com.power.mybatis.mapper.UserMapper&quot;&gt;&lt;/mapper&gt;--&gt;</span><br><span class="line">        &lt;package name=&quot;com.power.mybatis.mapper&quot;&gt;&lt;/package&gt;</span><br><span class="line">       &lt;!-- &lt;mapper class=&quot;com.power.mapper.UserMapper&quot;&gt;&lt;/mapper&gt;--&gt;</span><br><span class="line">      &lt;!--  &lt;package name=&quot;com.power.mapper&quot;&gt;&lt;/package&gt;--&gt;</span><br><span class="line">    &lt;/mappers&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="三、编写测试"><a href="#三、编写测试" class="headerlink" title="三、编写测试"></a>三、编写测试</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Slf4j</span><br><span class="line">public class MybatisTest &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // &lt;mapper resource=&quot;UserMapper.xml&quot;/&gt;</span><br><span class="line">    @Test</span><br><span class="line">    public void test() throws IOException &#123;</span><br><span class="line">        String resource = &quot;mybatis-config.xml&quot;;</span><br><span class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">        User user = sqlSession.selectOne(&quot;com.power.mapper.UserMapper.selectUser&quot;, 1);</span><br><span class="line">        log.info(&quot;user:&#123;&#125;&quot;, user);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * &lt;mapper class=&quot;com.power.mybatis.mapper.UserMapper&quot;&gt;&lt;/mapper&gt;</span><br><span class="line">     * &lt;package name=&quot;com.power.mybatis.mapper&quot;&gt;&lt;/package&gt;</span><br><span class="line">     * 注解的方式</span><br><span class="line">     *</span><br><span class="line">     * @throws IOException</span><br><span class="line">     */</span><br><span class="line">    @Test</span><br><span class="line">    public void test2() throws IOException &#123;</span><br><span class="line">        String resource = &quot;mybatis-config.xml&quot;;</span><br><span class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">        UserMapper mapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">        User user = mapper.selectUser(1);</span><br><span class="line">        log.info(&quot;user:&#123;&#125;&quot;, user);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="源码阅读"><a href="#源码阅读" class="headerlink" title="源码阅读"></a>源码阅读</h3><p>环境搭建好了之后，就开始Debug源码走，下面是基于注解的方式debug记录</p>
+<blockquote>
+<p>基于注解方式源码阅读 mapper 配置  <code>&lt;mapper class=&quot;com.power.mybatis.mapper.UserMapper&quot;&gt;&lt;/mapper&gt;</code></p>
+</blockquote>
+<ul>
+<li>1.读取mybatis-config.xml 并解析 返回org.apache.ibatis.session.SqlSessionFactory<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; org.apache.ibatis.session.SqlSessionFactoryBuilder</span><br><span class="line">  &gt; org.apache.ibatis.builder.xml.XMLConfigBuilder().parse() 读取/mybatis-config.xml并解析 返回Configuration</span><br><span class="line">   &gt; org.apache.ibatis.session.Configuration</span><br><span class="line">     &gt; org.apache.ibatis.session.SqlSessionFactoryBuilder</span><br><span class="line">       &gt; org.apache.ibatis.session.SqlSessionFactoryBuilder.build(org.apache.ibatis.session.Configuration)</span><br><span class="line">          &gt; org.apache.ibatis.session.defaults.DefaultSqlSessionFactory 调用默认DefaultSqlSessionFactory 构造器</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>2 获取到 <code>org.apache.ibatis.session.SqlSessionFactory</code> 之后执行 <code>openSession</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; org.apache.ibatis.session.defaults.DefaultSqlSessionFactory.openSession()</span><br><span class="line">     &gt; org.apache.ibatis.session.defaults.DefaultSqlSessionFactory.openSessionFromDataSource()</span><br><span class="line">     &gt; org.apache.ibatis.transaction.TransactionFactory.newTransaction(environment.getDataSource(), level, autoCommit) 返回Transaction 事务</span><br><span class="line">         &gt; org.apache.ibatis.session.Configuration.newExecutor(org.apache.ibatis.transaction.Transaction, org.apache.ibatis.session.ExecutorType)</span><br><span class="line">             &gt; org.apache.ibatis.executor.SimpleExecutor</span><br><span class="line">                 &gt; org.apache.ibatis.executor.CachingExecutor</span><br><span class="line">                     &gt;org.apache.ibatis.plugin.InterceptorChain.pluginAll</span><br></pre></td></tr></table></figure>
+<ul>
+<li>3 获取 <code>UserMaper</code> 并执行 <code>selectUser()</code> <br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; org.apache.ibatis.session.SqlSession.getMapper()</span><br><span class="line">    &gt; com.jiagouedu.mybatis.mapper.UserMapper.selectUser</span><br><span class="line">        &gt; org.apache.ibatis.binding.MapperProxy.invoke 实现InvocationHandler 使用jdk代理</span><br><span class="line">               &gt;org.apache.ibatis.binding.MapperMethod.execute(org.apache.ibatis.session.SqlSession)</span><br><span class="line">                    &gt;org.apache.ibatis.session.defaults.DefaultSqlSession.selectOne(java.lang.String, java.lang.Object)</span><br><span class="line">                          &gt;org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(java.lang.String, java.lang.Object)</span><br><span class="line">                             &gt; org.apache.ibatis.session.Configuration.getMappedStatement(java.lang.String)</span><br><span class="line">                                &gt; org.apache.ibatis.executor.CachingExecutor.query(org.apache.ibatis.mapping.MappedStatement, java.lang.Object, org.apache.ibatis.session.RowBounds, org.apache.ibatis.session.ResultHandler)</span><br><span class="line">                                    &gt; org.apache.ibatis.mapping.MappedStatement.getBoundSql(org.apache.ibatis.mapping.MappedStatement)</span><br><span class="line">                               &gt; org.apache.ibatis.executor.CachingExecutor.createCacheKey()</span><br><span class="line">                                       缓存KEY 结构  id +sql+limit+offsetxxx：396405528:1543508020:com.power.mybatis.mapper.UserMapper.selectUser:0:2147483647:select id,username,age,phone,`desc` from user where id=?:1:development</span><br><span class="line">                                            	&gt; org.apache.ibatis.executor.BaseExecutor.query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)</span><br><span class="line">                                            	    &gt;org.apache.ibatis.executor.BaseExecutor.queryFromDatabase()</span><br><span class="line">                                                      &gt; org.apache.ibatis.executor.BaseExecutor.doQuery</span><br><span class="line">                                                        &gt;org.apache.ibatis.executor.resultset.ResultSetHandler.handleResultSets</span><br><span class="line">                                                             &gt;org.apache.ibatis.executor.resultset.DefaultResultSetHandler</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="四、执行流程图"><a href="#四、执行流程图" class="headerlink" title="四、执行流程图"></a>四、执行流程图</h3><p><img src="http://blog.wwudev.cn/img/mybatis/mybatis-flow.png" width="100%"></p>
+<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>关键作用<br>名称 | 作用<br>—|—<br>Configuration                  | 管理mysql-config.xml 全局配置关系类<br>SqlSessionFactory                |            Session 管理工厂接口<br>Session                       |     是一个面向用户（程序员）的接口。SqlSession                        中提 供了很多操作数据库的方法<br>Executor  | 执行器是一个接口（基本执行器、缓存执行器） 作用：SqlSession  内部通过执行器操作数据库<br>MappedStatement  | 对操作数据库存储封装，包括  sql 语句、输入输出参数<br>StatementHandler     |         具体操作数据库相关的handler 接口<br>ResultSetHandler     |       具体操作数据库返回结果的handler 接口  </p>
+<p>其中根据断点发现mybatis缓存特点：</p>
+<p>每当我们使用 MyBatis 开启一次和数据库的会话，MyBatis 会创建出一个SqlSession 对象表 示一次数据库会话。  在对数据库的一次会话中，我们有可能会反复地执行完全相同的查询 语句，如果不采取一些措施的话，每一次查询都会查询一次数据库,而我们在极短的时间内做了完全相同的查询，那么它们的结果极有可能完全相同，由于查询一次数据库的代价很大， 这有可能造成很大的资源浪费。          </p>
+<p>为了解决这一问题，减少资源的浪费，MyBatis 会在表示会话的 SqlSession 对象中建立一个 简单的缓存，将每次查询到的结果结果缓存起来，当下次查询的时候，如果判断先前有个完 全一样的查询，会直接从缓存中直接将结果取出，返回给用户，不需要再进行一次数据库查<br>询了。<br>cache key: id +sql+limit+offsetxxx  </p>
+<p>mybatis 缓存参考</p>
+<p><a href="https://blog.csdn.net/u012373815/article/details/47069223" target="_blank" rel="noopener">https://blog.csdn.net/u012373815/article/details/47069223</a><br><a href="http://www.cnblogs.com/xdp-gacl/p/4270403.html" target="_blank" rel="noopener">http://www.cnblogs.com/xdp-gacl/p/4270403.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mybatis</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/源码阅读//" class="article-tag-list-link color5">源码阅读</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/24/mybatis源码初探/">展开全文 >></a>
+        </p>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-angular-1-5-Service、Factory、Provider的理解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1292,6 +1406,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">jenkins</a>
               </li>
              
@@ -1300,11 +1418,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mysql安装</a>
+                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color3">mysql安装</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1316,11 +1434,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
+                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">java 源码</a>
+                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
               </li>
              
               <li class="article-tag-list-item">

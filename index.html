@@ -205,6 +205,107 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-maven集成tomcat7插件使用及部署" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/30/maven集成tomcat7插件使用及部署/">maven集成tomcat7插件使用及部署</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/30/maven集成tomcat7插件使用及部署/" class="archive-article-date">
+  	<time datetime="2018-08-30T04:59:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在项目开发中，由于每次测试环境需要手动去部署，特别麻烦，在想有没有在本地发布之后，测试环境自动就部署好，好在maven可以集成tomcat7插件，我们可以利用这个插件帮我们自动部署；下面步骤记录的集成过程；</p>
+<h3 id="一、tomcat-配置"><a href="#一、tomcat-配置" class="headerlink" title="一、tomcat 配置"></a>一、tomcat 配置</h3><p><code>tomcat</code> 环境下，我用的是tomcat8，我们先配 <code>tomcat</code> 用户角色,找到 <code>/conf</code> 目录下的 <code>tomcat-users.xml</code> 文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">tomcat-users</span> <span class="attr">xmlns</span>=<span class="string">"http://tomcat.apache.org/xml"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://tomcat.apache.org/xml tomcat-users.xsd"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"manager"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"manager-gui"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"admin"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"admin-gui"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">role</span> <span class="attr">rolename</span>=<span class="string">"manager-script"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">user</span> <span class="attr">username</span>=<span class="string">"tomcat"</span> <span class="attr">password</span>=<span class="string">"tomcat"</span> <span class="attr">roles</span>=<span class="string">"admin-gui,admin,manager-gui,manager,manager-script"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tomcat-users</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>顺便说明下 tomcat 的角色说明<br>以下是 <code>Tomcat Manager</code> 4种角色的大致介绍(下面 URL 中的*为通配符)：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">manager-gui</span><br><span class="line">允许访问html接口(即URL路径为/manager/html/*)</span><br><span class="line">manager-script</span><br><span class="line">允许访问纯文本接口(即URL路径为/manager/text/*)</span><br><span class="line">manager-jmx</span><br><span class="line">允许访问JMX代理接口(即URL路径为/manager/jmxproxy/*)</span><br><span class="line">manager-status</span><br><span class="line">允许访问Tomcat只读状态页面(即URL路径为/manager/status/*)</span><br></pre></td></tr></table></figure></p>
+<p>tomcat8下还需要注意配置<code>/webapps/manager/META-INF/context.xml</code>目录下的文件，否则依然拒绝访问，配置如下<br>原来的：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">antiResourceLocking</span>=<span class="string">"false"</span> <span class="attr">privileged</span>=<span class="string">"true"</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"org.apache.catalina.valves.RemoteAddrValve"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">allow</span>=<span class="string">"127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">sessionAttributeValueClassNameFilter</span>=<span class="string">"java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>改成 去掉IP地址的访问限制<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Context</span> <span class="attr">antiResourceLocking</span>=<span class="string">"false"</span> <span class="attr">privileged</span>=<span class="string">"true"</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">sessionAttributeValueClassNameFilter</span>=<span class="string">"java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Context</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="二、maven集成插件"><a href="#二、maven集成插件" class="headerlink" title="二、maven集成插件"></a>二、maven集成插件</h3><p>在pom.xml添加插件 <code>tomcat7</code> 插件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">    &lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.power<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COMPILE.JDK</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">COMPILE.JDK</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">COMPILE.ENCODING</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">COMPILE.ENCODING</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>test<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">source</span>&gt;</span>$&#123;COMPILE.JDK&#125;<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">target</span>&gt;</span>$&#123;COMPILE.JDK&#125;<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- 指明编译源代码时使用的字符编码，</span></span><br><span class="line"><span class="comment">                maven编译的时候默认使用的GBK编码，</span></span><br><span class="line"><span class="comment">              通过encoding属性设置字符编码，</span></span><br><span class="line"><span class="comment">              告诉maven这个项目使用UTF-8来编译 --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">encoding</span>&gt;</span>utf8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-war-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">failOnMissingWebXml</span>&gt;</span>false<span class="tag">&lt;/<span class="name">failOnMissingWebXml</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!--deploy begin--&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://127.0.0.1:8080/manager/text<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">server</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">username</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">password</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">path</span>&gt;</span>/test<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">uriEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">uriEncoding</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!--deploy end--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>可以 <code>maven</code> 的 <code>settings.xml</code> 配置服务如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>tomcat8<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>tomcat<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后再 <code>pom.xml</code> 文件配置如下<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--deploy begin--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://127.0.0.1:8080/manager/text<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">server</span>&gt;</span>tomcat8<span class="tag">&lt;/<span class="name">server</span>&gt;</span> <span class="comment">&lt;!-- 此处的名字必须和setting.xml中配置的ID一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span>&gt;</span>/test<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">uriEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">uriEncoding</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--deploy end--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="三、发布"><a href="#三、发布" class="headerlink" title="三、发布"></a>三、发布</h3><p>cd 到当前项目目录下，执行 <code>mvn clean tomcat7:deploy</code>,或者你可以用工具执行，我用是idea，配置如下：</p>
+<p><img src="http://blog.wwudev.cn/img/maven/tomcat-7-deploy.png" width="100%"></p>
+<p>最后访问 <code>localhost:8080/test</code>就可以了</p>
+<p>如果已经发布的话那么再次发布会失败，那么可以使用这样的命令 <code>mvn clean tomcat7:redeploy</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">maven</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/持续集成//" class="article-tag-list-link color5">持续集成</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/30/maven集成tomcat7插件使用及部署/">展开全文 >></a>
+        </p>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-mybatis源码初探" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1206,111 +1307,10 @@
 
 
   
-    <article id="post-centos下mysql数据库的安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/06/centos下mysql数据库的安装/">centos下mysql数据库的安装</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/06/centos下mysql数据库的安装/" class="archive-article-date">
-  	<time datetime="2017-10-06T14:51:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1、下载安装包"><a href="#1、下载安装包" class="headerlink" title="1、下载安装包"></a>1、下载安装包</h3><p><a href="https://dev.mysql.com/downloads/mysql/5.5.html#downloads" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/5.5.html#downloads</a><br><img src="http://img.blog.csdn.net/20171006095843819?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h3 id="2、上传安装包到centos"><a href="#2、上传安装包到centos" class="headerlink" title="2、上传安装包到centos"></a>2、上传安装包到centos</h3><p>使用用具xshell ，由于系统刚装完，先安装上传下载组件；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure></p>
-<p>查找这两个文件是否存在，存在则说明之前有个安装，删除掉即可。还有可能是系统自带的，先删掉；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ll /etc/my.cnf</span><br><span class="line">ll /etc/init.d/mysql*</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-安装依赖包异步IO-libaio"><a href="#3-安装依赖包异步IO-libaio" class="headerlink" title="3.安装依赖包异步IO(libaio)"></a>3.安装依赖包异步IO(libaio)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum search libaio      </span><br><span class="line">yum install libaio     #安装libaio</span><br></pre></td></tr></table></figure>
-<p><img src="http://img.blog.csdn.net/20171006105150898?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h3 id="4-解压安装包"><a href="#4-解压安装包" class="headerlink" title="4.解压安装包"></a>4.解压安装包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cd 到mysoft/pack 目录下</span><br><span class="line">tar -zxcf  mysql-5.5.57-linux-glibc2.12-x86_64.tar.gz</span><br><span class="line">#创建软连接</span><br><span class="line">[root@localhost mysoft]# ln -s /mysoft/pack/mysql-5.5.57-linux-glibc2.12-x86_64 mysql</span><br></pre></td></tr></table></figure>
-<h3 id="5-创建用户和用户权限"><a href="#5-创建用户和用户权限" class="headerlink" title="5.创建用户和用户权限"></a>5.创建用户和用户权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysoft]# ll</span><br><span class="line">总用量 0</span><br><span class="line">lrwxrwxrwx. 1 root root 48 10月  6 11:32 mysql -&gt; /mysoft/pack/mysql-5.5.57-linux-glibc2.12-x86_64</span><br><span class="line">drwxr-xr-x. 3 root root 99 10月  6 11:30 pack</span><br><span class="line">#创建mysql用户组</span><br><span class="line">[root@localhost mysoft]# groupadd mysql </span><br><span class="line">#把用户mysql添加到mysql用户组， -r系统用户 -g所属组 -s /bin/false 用户不可登录</span><br><span class="line">[root@localhost mysoft]# useradd -r -g mysql -s /bin/false mysql</span><br><span class="line">[root@localhost mysoft]# cd mysql</span><br><span class="line">#改变文件的所有权 -R表示改变一个目录和其下文件（或者子目录）的所有权设置 </span><br><span class="line">[root@localhost mysql]# chown -R mysql ./  #mysql下的所有目录和文件交给mysql用户</span><br><span class="line">[root@localhost mysql]# chgrp -R mysql ./  #mysql下的所有目录和文件交给mysql组</span><br><span class="line">[root@localhost mysql]# ll</span><br><span class="line">总用量 56</span><br><span class="line">drwxr-xr-x.  2 mysql mysql  4096 10月  6 11:30 bin</span><br><span class="line">-rw-r--r--.  1 mysql mysql 17987 6月   5 14:38 COPYING</span><br><span class="line">drwxr-xr-x.  3 mysql mysql    18 10月  6 11:30 data</span><br><span class="line">drwxr-xr-x.  2 mysql mysql    55 10月  6 11:30 docs</span><br><span class="line">drwxr-xr-x.  3 mysql mysql  4096 10月  6 11:30 include</span><br><span class="line">-rw-r--r--.  1 mysql mysql   301 6月   5 14:38 INSTALL-BINARY</span><br><span class="line">drwxr-xr-x.  3 mysql mysql  4096 10月  6 11:30 lib</span><br><span class="line">drwxr-xr-x.  4 mysql mysql    30 10月  6 11:30 man</span><br><span class="line">drwxr-xr-x. 10 mysql mysql  4096 10月  6 11:30 mysql-test</span><br><span class="line">-rw-r--r--.  1 mysql mysql  2496 6月   5 14:38 README</span><br><span class="line">drwxr-xr-x.  2 mysql mysql    30 10月  6 11:30 scripts</span><br><span class="line">drwxr-xr-x. 27 mysql mysql  4096 10月  6 11:30 share</span><br><span class="line">drwxr-xr-x.  4 mysql mysql  4096 10月  6 11:30 sql-bench</span><br><span class="line">drwxr-xr-x.  2 mysql mysql  4096 10月  6 11:30 support-files</span><br></pre></td></tr></table></figure>
-<h3 id="6-拷贝mysql配置文件"><a href="#6-拷贝mysql配置文件" class="headerlink" title="6.拷贝mysql配置文件"></a>6.拷贝mysql配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysql]# cd support-fils</span><br><span class="line">[root@localhost support-files]# cp my-medium.cnf /etc/my.cnf</span><br><span class="line">[root@localhost support-files]# cp mysql.server /etc/init.d/mysql</span><br></pre></td></tr></table></figure>
-<p>###7.修改my.cnf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br><span class="line">#修改mysql指向，添加这两个目录；</span><br><span class="line">basedir=/mysoft/mysql</span><br><span class="line">datadir=/mysoft/mysql/data</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://img.blog.csdn.net/20171006140445130?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h3 id="8-安装mysql"><a href="#8-安装mysql" class="headerlink" title="8.安装mysql"></a>8.安装mysql</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mysql]# cd scripts</span><br><span class="line">[root@localhost scripts]# ./mysql_install_db --user=mysql --basedir=/mysoft/mysql datadir=/mysoft/mysql/data</span><br></pre></td></tr></table></figure>
-<p>安装成功效果<br><img src="http://img.blog.csdn.net/20171006140704113?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h3 id="9-添加环境变量"><a href="#9-添加环境变量" class="headerlink" title="9.添加环境变量"></a>9.添加环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost scripts]# vim /etc/profile</span><br><span class="line">#添加环境变量</span><br><span class="line">export PATH=$PATH:/mysoft/mysql/bin</span><br><span class="line">[root@localhost scripts]# source /etc/profile #生效</span><br></pre></td></tr></table></figure>
-<p>###10.初始化用户名密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# ./mysql_secure_installation</span><br></pre></td></tr></table></figure></p>
-<p>###11.授权远程登录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mysql</span><br><span class="line">mysql&gt; update user set host='%' where user='root' and host ='localhost';</span><br><span class="line">mysql&gt; flush pivileges;</span><br></pre></td></tr></table></figure>
-<h3 id="12-关闭防火墙"><a href="#12-关闭防火墙" class="headerlink" title="12.关闭防火墙"></a>12.关闭防火墙</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]# systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
-<h3 id="13-使用工具连接"><a href="#13-使用工具连接" class="headerlink" title="13.使用工具连接"></a>13.使用工具连接</h3><p><img src="http://img.blog.csdn.net/20171006141536272?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql安装</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/mysql//" class="article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/06/centos下mysql数据库的安装/">展开全文 >></a>
-        </p>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-
-  </div>
-
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 
 
@@ -1406,15 +1406,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">jenkins</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1422,11 +1414,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">异常Spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">maven</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">git 版本管理  持续集成</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1442,7 +1446,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
             
             <div class="clearfix"></div>

@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>angular-1.5-Service、Factory、Provider的理解 | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同; 1.service 方式实现先看用service实现自定义服务service 参数 第一个参数是服务名称 第二个参数是构造方法，在构造方法里我们可以注入一些服务也就是一些依赖。 123456789101">
+  <meta name="description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同;">
 <meta name="keywords" content="angular">
 <meta property="og:type" content="article">
 <meta property="og:title" content="angular-1.5-Service、Factory、Provider的理解">
 <meta property="og:url" content="http://blog.wwudev.cn/2018/08/23/angular-1-5-Service、Factory、Provider的理解/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同; 1.service 方式实现先看用service实现自定义服务service 参数 第一个参数是服务名称 第二个参数是构造方法，在构造方法里我们可以注入一些服务也就是一些依赖。 123456789101">
+<meta property="og:description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同;">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-24T01:01:22.643Z">
+<meta property="og:updated_time" content="2018-09-05T03:06:33.171Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular-1.5-Service、Factory、Provider的理解">
-<meta name="twitter:description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同; 1.service 方式实现先看用service实现自定义服务service 参数 第一个参数是服务名称 第二个参数是构造方法，在构造方法里我们可以注入一些服务也就是一些依赖。 123456789101">
+<meta name="twitter:description" content="angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同;">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
   
@@ -224,7 +224,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同;</p>
+        <p>angular 服务是在实际项目开发中负责复杂业务逻辑的操作的，所以我们经常要写一些自定义service;具体可以用service、Factory、Provider 来实现,实现的方式也有所不同;<br><a id="more"></a></p>
 <h2 id="1-service-方式实现"><a href="#1-service-方式实现" class="headerlink" title="1.service 方式实现"></a>1.service 方式实现</h2><p>先看用service实现自定义服务<br>service 参数 第一个参数是服务名称 第二个参数是构造方法，在构造方法里我们可以注入一些服务也就是一些依赖。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> app = angular.module(<span class="string">"app"</span>,[]);	</span><br><span class="line">    app.service(<span class="string">"payService"</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>.doPay = <span class="function"><span class="keyword">function</span>(<span class="params">price</span>)</span>&#123;</span><br><span class="line">    		<span class="built_in">console</span>.log(<span class="string">"支付金额："</span>+price);</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    app.service(<span class="string">"orderService"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$timeout,payService</span>)</span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>.doPay = <span class="function"><span class="keyword">function</span>(<span class="params">$scope</span>)</span>&#123;</span><br><span class="line">    		payService.doPay($scope.goodPrice);</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    app.controller(<span class="string">"mainCtrl"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">$scope,orderService</span>)</span>&#123;</span><br><span class="line">    	$scope.goodPrice = <span class="number">100</span>;</span><br><span class="line">    	orderService.doPay($scope);</span><br><span class="line">    	</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
 <h2 id="2-factory-方式实现"><a href="#2-factory-方式实现" class="headerlink" title="2.factory 方式实现"></a>2.factory 方式实现</h2><p>factory 参数 第一个参数是服务名称 第二个参数是普通的方法，我们也可以在普通方法上注入一些服务，但是，方法的返回值必须是一个对象实例;</p>

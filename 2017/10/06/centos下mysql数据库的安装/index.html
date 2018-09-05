@@ -8,23 +8,23 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>centos下mysql数据库的安装 | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads 2、上传安装包到centos使用用具xshell ，由于系统刚装完，先安装上传下载组件；1yum install lrzsz 查找这两个文件是否存在，存在则说明之前有个安装，删除掉即可。还有可能是系统自带的，先删掉；12ll /etc/my.cnfll /etc/init">
+  <meta name="description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads">
 <meta name="keywords" content="mysql安装">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos下mysql数据库的安装">
 <meta property="og:url" content="http://blog.wwudev.cn/2017/10/06/centos下mysql数据库的安装/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads 2、上传安装包到centos使用用具xshell ，由于系统刚装完，先安装上传下载组件；1yum install lrzsz 查找这两个文件是否存在，存在则说明之前有个安装，删除掉即可。还有可能是系统自带的，先删掉；12ll /etc/my.cnfll /etc/init">
+<meta property="og:description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://img.blog.csdn.net/20171006095843819?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171006105150898?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171006140445130?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171006140704113?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20171006141536272?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2018-08-14T14:54:18.155Z">
+<meta property="og:updated_time" content="2018-09-05T03:06:42.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos下mysql数据库的安装">
-<meta name="twitter:description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads 2、上传安装包到centos使用用具xshell ，由于系统刚装完，先安装上传下载组件；1yum install lrzsz 查找这两个文件是否存在，存在则说明之前有个安装，删除掉即可。还有可能是系统自带的，先删掉；12ll /etc/my.cnfll /etc/init">
+<meta name="twitter:description" content="1、下载安装包https://dev.mysql.com/downloads/mysql/5.5.html#downloads">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20171006095843819?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
@@ -230,7 +230,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="1、下载安装包"><a href="#1、下载安装包" class="headerlink" title="1、下载安装包"></a>1、下载安装包</h3><p><a href="https://dev.mysql.com/downloads/mysql/5.5.html#downloads" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/5.5.html#downloads</a><br><img src="http://img.blog.csdn.net/20171006095843819?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+        <h3 id="1、下载安装包"><a href="#1、下载安装包" class="headerlink" title="1、下载安装包"></a>1、下载安装包</h3><p><a href="https://dev.mysql.com/downloads/mysql/5.5.html#downloads" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/5.5.html#downloads</a><br><img src="http://img.blog.csdn.net/20171006095843819?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"><br><a id="more"></a></p>
 <h3 id="2、上传安装包到centos"><a href="#2、上传安装包到centos" class="headerlink" title="2、上传安装包到centos"></a>2、上传安装包到centos</h3><p>使用用具xshell ，由于系统刚装完，先安装上传下载组件；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure></p>
 <p>查找这两个文件是否存在，存在则说明之前有个安装，删除掉即可。还有可能是系统自带的，先删掉；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ll /etc/my.cnf</span><br><span class="line">ll /etc/init.d/mysql*</span><br></pre></td></tr></table></figure></p>
 <h3 id="3-安装依赖包异步IO-libaio"><a href="#3-安装依赖包异步IO-libaio" class="headerlink" title="3.安装依赖包异步IO(libaio)"></a>3.安装依赖包异步IO(libaio)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum search libaio      </span><br><span class="line">yum install libaio     #安装libaio</span><br></pre></td></tr></table></figure>

@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>Colletions.sort(list)总结 | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。  jDK6  而Arrays.sort()，对原始类型(int[],double[],char">
+  <meta name="description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。">
 <meta name="keywords" content="笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Colletions.sort(list)总结">
 <meta property="og:url" content="http://blog.wwudev.cn/2018/07/30/Colletions-sort-list-总结/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。  jDK6  而Arrays.sort()，对原始类型(int[],double[],char">
+<meta property="og:description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-30T14:13:34.260Z">
+<meta property="og:updated_time" content="2018-09-05T03:06:53.337Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Colletions.sort(list)总结">
-<meta name="twitter:description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。  jDK6  而Arrays.sort()，对原始类型(int[],double[],char">
+<meta name="twitter:description" content="Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
   
@@ -224,7 +224,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。<br>在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。</p>
+        <p>Colletions.sort()实际会将list转为数组，然后调用Arrays.sort()，排完了再转回List。<br><a id="more"></a><br>在JDK8里，List有自己的sort()方法了，像ArrayList就直接用自己内部的数组来排，而LinkedList, CopyOnWriteArrayList还是要复制出一份数组。</p>
 <blockquote>
 <p>jDK6</p>
 </blockquote>

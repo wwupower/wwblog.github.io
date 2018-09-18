@@ -229,24 +229,10 @@
 <h4 id="master-分支"><a href="#master-分支" class="headerlink" title="master 分支"></a>master 分支</h4><ol>
 <li>Master 分支应该始终和生产环境保持一致。</li>
 <li>由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。</li>
-<li>真正的开发代码应当写在其他分支上。</li>
-</ol>
-<h4 id="Release-发布-分支"><a href="#Release-发布-分支" class="headerlink" title="Release(发布) 分支"></a>Release(发布) 分支</h4><ol>
-<li>当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。</li>
-<li>所有与本项目相关的代码都在发布分支中，这个分支也是一个以 release/ 开头的普通分支。<br>比如这次的发布分支名为 release/fb。</li>
-<li>可能有多个项目都基于同一份代码运行，因此对于每一个项目来说都需要创建一个独立的发布分支。假设现在还有一个项目正在并行运行，那就得为这个项目创建一个单独的发布分支比如 release/messenger。</li>
-<li>需要单独的发布分支的原因是：多个并行项目是基于同一份代码运行的，但是项目之间不能有冲突。</li>
-</ol>
-<h4 id="Feature-功能分支-branch"><a href="#Feature-功能分支-branch" class="headerlink" title="Feature(功能分支) branch"></a>Feature(功能分支) branch</h4><ol>
-<li>对于应用中的每一个功能都应该创建一个独立的功能分支，这会确保这些功能能被单独构建。<br>功能分支也和其他分支一样，只是以 feature/ 开头。</li>
-<li>现在作为技术 Leader，你要求 Alice 去做 Facebook 的登录页面。因此他创建了一个新的功能分支。把他命名为 feature/login。Alice 将会在这个分支上编写所有的登录代码。</li>
-<li>这个功能分支通常是基于 Release(发布) 分支 创建而来。<br>Bob 的任务为创建添加好友页面，因此他创建了一个名为 feature/friendrequest 的功能分支。<br>John 则被安排构建消息流，因此创建了一个 feature/newsfeed 的功能分支。</li>
-<li>所有的开发人员都在自己的分支上进行开发，目前为止都很正常。<br>现在当 Alice 完成了他的登录开发，他需要将他的功能分支 feature/login 发送给 Release(发布) 分支。这个过程是通过发起一个 pull request 完成的。</li>
-</ol>
-<h4 id="功能合并"><a href="#功能合并" class="headerlink" title="功能合并"></a>功能合并</h4><p>通常一个功能开发完成之后，我们需要把当前分支合并到发布分支上，我们必须经过代码走查才能合并到分支，合并我们需要 <code>pull requst</code></p>
-<h3 id="二、一些常用的操作"><a href="#二、一些常用的操作" class="headerlink" title="二、一些常用的操作"></a>二、一些常用的操作</h3><h4 id="1-如何添加忽略提交文件"><a href="#1-如何添加忽略提交文件" class="headerlink" title="1.如何添加忽略提交文件"></a>1.如何添加忽略提交文件</h4><p>创建忽略文件 <code>.gitignore</code>,编辑内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.idea</span><br><span class="line">*.iml</span><br><span class="line">*.ipr</span><br><span class="line">*.iws</span><br><span class="line">out</span><br><span class="line">.classpath</span><br><span class="line">.project</span><br><span class="line">.settings/</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-如何创建功能开发分支"><a href="#2-如何创建功能开发分支" class="headerlink" title="2.如何创建功能开发分支"></a>2.如何创建功能开发分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch dev1 #基于当前分支创建功能分支dev1</span><br><span class="line">$ git push origin dev1:dev1 #把本地分支推送到远程分支</span><br></pre></td></tr></table></figure>
-
+<li>真正的开发代码应当写在其他分支上。
+        
+          <a class="article-more-a" href="/2018/09/18/git项目开发一些问题/#more">阅读全文 >></a>
+        
       
 
       

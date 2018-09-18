@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>git项目开发一些问题 | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
+  <meta name="description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。">
 <meta name="keywords" content="git开发问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git项目开发一些问题">
 <meta property="og:url" content="http://blog.wwudev.cn/2018/09/18/git项目开发一些问题/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
+<meta property="og:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-18T03:27:41.415Z">
+<meta property="og:updated_time" content="2018-09-18T03:28:34.266Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git项目开发一些问题">
-<meta name="twitter:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
+<meta name="twitter:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
   
@@ -228,9 +228,8 @@
 <h4 id="master-分支"><a href="#master-分支" class="headerlink" title="master 分支"></a>master 分支</h4><ol>
 <li>Master 分支应该始终和生产环境保持一致。</li>
 <li>由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。</li>
-<li>真正的开发代码应当写在其他分支上。</li>
-</ol>
-<h4 id="Release-发布-分支"><a href="#Release-发布-分支" class="headerlink" title="Release(发布) 分支"></a>Release(发布) 分支</h4><ol>
+<li>真正的开发代码应当写在其他分支上。<a id="more"></a>
+<h4 id="Release-发布-分支"><a href="#Release-发布-分支" class="headerlink" title="Release(发布) 分支"></a>Release(发布) 分支</h4></li>
 <li>当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。</li>
 <li>所有与本项目相关的代码都在发布分支中，这个分支也是一个以 release/ 开头的普通分支。<br>比如这次的发布分支名为 release/fb。</li>
 <li>可能有多个项目都基于同一份代码运行，因此对于每一个项目来说都需要创建一个独立的发布分支。假设现在还有一个项目正在并行运行，那就得为这个项目创建一个单独的发布分支比如 release/messenger。</li>

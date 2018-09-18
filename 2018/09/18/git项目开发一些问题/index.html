@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
-  <title>Tag: mysql安装 | 王武的博客</title>
+  <title>git项目开发一些问题 | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="嗨大家好欢迎关注我的博客">
-<meta name="keywords" content="技术">
-<meta property="og:type" content="website">
-<meta property="og:title" content="王武的博客">
-<meta property="og:url" content="http://blog.wwudev.cn/tags/mysql安装/index.html">
+  <meta name="description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
+<meta name="keywords" content="git开发问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git项目开发一些问题">
+<meta property="og:url" content="http://blog.wwudev.cn/2018/09/18/git项目开发一些问题/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="嗨大家好欢迎关注我的博客">
+<meta property="og:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-09-18T03:27:41.415Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王武的博客">
-<meta name="twitter:description" content="嗨大家好欢迎关注我的博客">
+<meta name="twitter:title" content="git项目开发一些问题">
+<meta name="twitter:description" content="一、Git 开发流程 master 分支 Master 分支应该始终和生产环境保持一致。 由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。 真正的开发代码应当写在其他分支上。  Release(发布) 分支 当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。 所有与本项目相关的代码都在发布分支中，这个分支也是一个以">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
   
@@ -203,72 +204,229 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-git项目开发一些问题" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/10/06/centos下mysql数据库的安装/" class="archive-article-date">
-  	<time datetime="2017-10-06T14:51:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-06</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/10/06/centos下mysql数据库的安装/">centos下mysql数据库的安装</a>
+    <h1 class="article-title" itemprop="name">
+      git项目开发一些问题
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/09/18/git项目开发一些问题/" class="archive-article-date">
+  	<time datetime="2018-09-18T03:25:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="一、Git-开发流程"><a href="#一、Git-开发流程" class="headerlink" title="一、Git 开发流程"></a>一、Git 开发流程</h3><hr>
+<h4 id="master-分支"><a href="#master-分支" class="headerlink" title="master 分支"></a>master 分支</h4><ol>
+<li>Master 分支应该始终和生产环境保持一致。</li>
+<li>由于 master 和生产代码是一致的，所以没有人包括技术负责人能在 master 上直接开发。</li>
+<li>真正的开发代码应当写在其他分支上。</li>
+</ol>
+<h4 id="Release-发布-分支"><a href="#Release-发布-分支" class="headerlink" title="Release(发布) 分支"></a>Release(发布) 分支</h4><ol>
+<li>当项目开始时，第一件事情就是创建发布分支。发布分支是基于 master 分支创建而来。</li>
+<li>所有与本项目相关的代码都在发布分支中，这个分支也是一个以 release/ 开头的普通分支。<br>比如这次的发布分支名为 release/fb。</li>
+<li>可能有多个项目都基于同一份代码运行，因此对于每一个项目来说都需要创建一个独立的发布分支。假设现在还有一个项目正在并行运行，那就得为这个项目创建一个单独的发布分支比如 release/messenger。</li>
+<li>需要单独的发布分支的原因是：多个并行项目是基于同一份代码运行的，但是项目之间不能有冲突。</li>
+</ol>
+<h4 id="Feature-功能分支-branch"><a href="#Feature-功能分支-branch" class="headerlink" title="Feature(功能分支) branch"></a>Feature(功能分支) branch</h4><ol>
+<li>对于应用中的每一个功能都应该创建一个独立的功能分支，这会确保这些功能能被单独构建。<br>功能分支也和其他分支一样，只是以 feature/ 开头。</li>
+<li>现在作为技术 Leader，你要求 Alice 去做 Facebook 的登录页面。因此他创建了一个新的功能分支。把他命名为 feature/login。Alice 将会在这个分支上编写所有的登录代码。</li>
+<li>这个功能分支通常是基于 Release(发布) 分支 创建而来。<br>Bob 的任务为创建添加好友页面，因此他创建了一个名为 feature/friendrequest 的功能分支。<br>John 则被安排构建消息流，因此创建了一个 feature/newsfeed 的功能分支。</li>
+<li>所有的开发人员都在自己的分支上进行开发，目前为止都很正常。<br>现在当 Alice 完成了他的登录开发，他需要将他的功能分支 feature/login 发送给 Release(发布) 分支。这个过程是通过发起一个 pull request 完成的。</li>
+</ol>
+<h4 id="功能合并"><a href="#功能合并" class="headerlink" title="功能合并"></a>功能合并</h4><p>通常一个功能开发完成之后，我们需要把当前分支合并到发布分支上，我们必须经过代码走查才能合并到分支，合并我们需要 <code>pull requst</code></p>
+<h3 id="二、一些常用的操作"><a href="#二、一些常用的操作" class="headerlink" title="二、一些常用的操作"></a>二、一些常用的操作</h3><h4 id="1-如何添加忽略提交文件"><a href="#1-如何添加忽略提交文件" class="headerlink" title="1.如何添加忽略提交文件"></a>1.如何添加忽略提交文件</h4><p>创建忽略文件 <code>.gitignore</code>,编辑内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.idea</span><br><span class="line">*.iml</span><br><span class="line">*.ipr</span><br><span class="line">*.iws</span><br><span class="line">out</span><br><span class="line">.classpath</span><br><span class="line">.project</span><br><span class="line">.settings/</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-如何创建功能开发分支"><a href="#2-如何创建功能开发分支" class="headerlink" title="2.如何创建功能开发分支"></a>2.如何创建功能开发分支</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git branch dev1 #基于当前分支创建功能分支dev1</span><br><span class="line">$ git push origin dev1:dev1 #把本地分支推送到远程分支</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>您得赞助是最大的动力<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/alipay.png">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/assets/weixinpay1.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+        <div style="color:#666">
+          <span id="busuanzi_container_page_pv">
+            本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+          </span>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">mysql安装</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">git开发问题</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/mysql//" class="article-tag-list-link color1">mysql</a>
+        			<a href="/categories/持续集成//" class="article-tag-list-link color5">持续集成</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
   </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://blog.wwudev.cn/2018/09/18/git项目开发一些问题/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/09/01/docker运行tomcat/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">docker运行tomcat</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、Git-开发流程"><span class="toc-number">1.</span> <span class="toc-text">一、Git 开发流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#master-分支"><span class="toc-number">1.1.</span> <span class="toc-text">master 分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Release-发布-分支"><span class="toc-number">1.2.</span> <span class="toc-text">Release(发布) 分支</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Feature-功能分支-branch"><span class="toc-number">1.3.</span> <span class="toc-text">Feature(功能分支) branch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#功能合并"><span class="toc-number">1.4.</span> <span class="toc-text">功能合并</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、一些常用的操作"><span class="toc-number">2.</span> <span class="toc-text">二、一些常用的操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-如何添加忽略提交文件"><span class="toc-number">2.1.</span> <span class="toc-text">1.如何添加忽略提交文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-如何创建功能开发分支"><span class="toc-number">2.2.</span> <span class="toc-text">2.如何创建功能开发分支</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
   
 
-    
+  
 
+  
+
+  
+
+  
 
           </div>
         </div>
@@ -292,9 +450,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

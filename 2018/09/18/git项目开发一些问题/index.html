@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://blog.wwudev.cn/img/git/日常开发.png">
 <meta property="og:image" content="http://blog.wwudev.cn/img/git/git分支合并冲突.png">
 <meta property="og:image" content="http://blog.wwudev.cn/img/git/git合并正常.png">
-<meta property="og:updated_time" content="2018-09-21T11:01:20.510Z">
+<meta property="og:updated_time" content="2018-09-21T11:04:06.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git项目开发一些问题">
 <meta name="twitter:description" content="一、Git 开发流程">
@@ -267,7 +267,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge release</span><br></pre></td></tr></table></figure>
 <p>冲突之后可看到</p>
 <p><img src="http://blog.wwudev.cn/img/git/git分支合并冲突.png" width="100%"></p>
-<p>把release分支的最新代码合并到本地user1分支，解决好冲突之后，再提交到远程，然后再发起合并请求<br>解决好之后：</p>
+<p>把release分支的最新代码合并到本地功能分支，解决好冲突之后，再提交到远程，然后再发起合并请求。这样就不会产生冲突了。<br>解决好之后：</p>
 <p><img src="http://blog.wwudev.cn/img/git/git合并正常.png" width="100%"></p>
 <h4 id="3-2-我提交错了，想撤回怎么撤"><a href="#3-2-我提交错了，想撤回怎么撤" class="headerlink" title="3.2 我提交错了，想撤回怎么撤"></a>3.2 我提交错了，想撤回怎么撤</h4><p>场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git <code>checkout -- file</code>。</p>
 <p>场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令 <code>git reset HEAD file</code> ，就回到了场景1，第二步按场景1操作。</p>

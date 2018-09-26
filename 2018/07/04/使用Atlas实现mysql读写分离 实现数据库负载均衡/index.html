@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://blog.wwudev.cn">
   <title>“使用Atlas实现mysql读写分离 实现数据库负载均衡” | 王武的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
+  <meta name="description" content="一、简介Atlas 是由 Qihoo 360公司 Web 平台部基础架构团队开发维护的一个基于 MySQL 协议的数据中间层项目。它在 MySQL 官方推出的 MySQL-Proxy 0.8.2 版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中">
 <meta name="keywords" content="数据库">
 <meta property="og:type" content="article">
 <meta property="og:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
 <meta property="og:url" content="http://blog.wwudev.cn/2018/07/04/使用Atlas实现mysql读写分离 实现数据库负载均衡/index.html">
 <meta property="og:site_name" content="王武的博客">
-<meta property="og:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
+<meta property="og:description" content="一、简介Atlas 是由 Qihoo 360公司 Web 平台部基础架构团队开发维护的一个基于 MySQL 协议的数据中间层项目。它在 MySQL 官方推出的 MySQL-Proxy 0.8.2 版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://blog.wwudev.cn/img/mysql/20171008201450434.png">
 <meta property="og:image" content="http://img.blog.csdn.net/20171008205057870?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3d1UG93ZXI=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2018-09-05T03:07:56.362Z">
+<meta property="og:updated_time" content="2018-09-26T06:13:51.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="“使用Atlas实现mysql读写分离 实现数据库负载均衡”">
-<meta name="twitter:description" content="一、简介Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，">
+<meta name="twitter:description" content="一、简介Atlas 是由 Qihoo 360公司 Web 平台部基础架构团队开发维护的一个基于 MySQL 协议的数据中间层项目。它在 MySQL 官方推出的 MySQL-Proxy 0.8.2 版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中">
 <meta name="twitter:image" content="http://blog.wwudev.cn/img/mysql/20171008201450434.png">
   
     <link rel="alternative" href="/atom.xml" title="王武的博客" type="application/atom+xml">
@@ -227,14 +227,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>Atlas是由 Qihoo 360公司Web平台部基础架构团队开发维护的一个基于MySQL协议的数据中间层项目。它在MySQL官方推出的MySQL-Proxy 0.8.2版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。<br><a id="more"></a><br>主要功能：</p>
+        <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>Atlas 是由 Qihoo 360公司 Web 平台部基础架构团队开发维护的一个基于 MySQL 协议的数据中间层项目。它在 MySQL 官方推出的 MySQL-Proxy 0.8.2 版本的基础上，修改了大量bug，添加了很多功能特性。目前该项目在360公司内部得到了广泛应用，很多MySQL业务已经接入了Atlas平台，每天承载的读写请求数达几十亿条。同时，有超过50家公司在生产环境中部署了Atlas，超过800人已加入了我们的开发者交流群，并且这些数字还在不断增加。<br><a id="more"></a><br>主要功能：</p>
 <p>1.读写分离</p>
 <p>2.从库负载均衡</p>
-<p>3.IP过滤</p>
+<p>3.IP 过滤</p>
 <p>4.自动分表</p>
-<p>5.DBA可平滑上下线DB</p>
-<p>6.自动摘除宕机的DB</p>
-<h3 id="二、Atlas相对于官方MySQL-Proxy的优势"><a href="#二、Atlas相对于官方MySQL-Proxy的优势" class="headerlink" title="二、Atlas相对于官方MySQL-Proxy的优势"></a>二、Atlas相对于官方MySQL-Proxy的优势</h3><hr>
+<p>5.DBA 可平滑上下线 DB</p>
+<p>6.自动摘除宕机的 DB</p>
+<h3 id="二、Atlas-相对于官方-MySQL-Proxy-的优势"><a href="#二、Atlas-相对于官方-MySQL-Proxy-的优势" class="headerlink" title="二、Atlas 相对于官方 MySQL-Proxy 的优势"></a>二、Atlas 相对于官方 MySQL-Proxy 的优势</h3><hr>
 <p>1.将主流程中所有Lua代码用C重写，Lua仅用于管理接口</p>
 <p>2.重写网络模型、线程模型</p>
 <p>3.实现了真正意义上的连接池</p>
@@ -432,7 +432,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、简介"><span class="toc-number">1.</span> <span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Atlas相对于官方MySQL-Proxy的优势"><span class="toc-number">2.</span> <span class="toc-text">二、Atlas相对于官方MySQL-Proxy的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、安装与配置"><span class="toc-number">3.</span> <span class="toc-text">三、安装与配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1注意事项"><span class="toc-number">3.1.</span> <span class="toc-text">3.1注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-上传安装"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 上传安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-配置"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-启动和关闭服务"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 启动和关闭服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-检验读写分离"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 检验读写分离</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、简介"><span class="toc-number">1.</span> <span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Atlas-相对于官方-MySQL-Proxy-的优势"><span class="toc-number">2.</span> <span class="toc-text">二、Atlas 相对于官方 MySQL-Proxy 的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、安装与配置"><span class="toc-number">3.</span> <span class="toc-text">三、安装与配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1注意事项"><span class="toc-number">3.1.</span> <span class="toc-text">3.1注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-上传安装"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 上传安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-配置"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-启动和关闭服务"><span class="toc-number">3.4.</span> <span class="toc-text">3.4 启动和关闭服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-检验读写分离"><span class="toc-number">3.5.</span> <span class="toc-text">3.5 检验读写分离</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
